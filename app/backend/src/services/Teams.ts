@@ -4,11 +4,21 @@ import TeamsModel from '../database/models/Teams';
 
 class TeamsService {
   constructor(
-    private teamModel: ModelStatic<TeamsModel>,
+    private teamsModel: ModelStatic<TeamsModel>,
   ) {}
 
-  public async listTeams(): Promise<TeamsInterface[]> {
-    return this.teamModel.findAll();
+  async listTeams(): Promise<TeamsInterface[]> {
+    return this.teamsModel.findAll();
+  }
+
+  async listTeamById(id: TeamsInterface['id']): Promise<TeamsInterface> {
+    const team = await this.teamsModel.findByPk(id);
+
+    if (!team) {
+      throw new Error('Not Found');
+    }
+
+    return team;
   }
 }
 
