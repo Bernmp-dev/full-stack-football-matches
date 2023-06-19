@@ -20,3 +20,19 @@ describe('GET "/teams"', function() {
     expect(response.body).to.deep.eq(teamsMock);
   });
 });
+
+describe('GET "/teams/:id"', function() {
+  it('Retorna time por id e status 200', async function() {
+    const response = await chai.request(app).get('/teams/1');
+
+    expect(response.status).eq(200);
+    expect(response.body).deep.eq(teamsMock[0]);
+  });
+
+  it('Retorna "Not Found" e status 404', async function() {
+    const response = await chai.request(app).get('/teams/999');
+
+    expect(response.status).eq(404);
+    expect(response.body.message).eq('Not Found');
+  });
+});
