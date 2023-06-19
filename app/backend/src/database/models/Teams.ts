@@ -6,12 +6,12 @@ import {
 } from 'sequelize';
 import db from '.';
 
-class Teams extends Model {
+class TeamsModel extends Model {
   declare id: CreationOptional<number>;
   declare teamName: string;
 }
 
-Teams.init({
+TeamsModel.init({
   id: {
     type: INTEGER,
     primaryKey: true,
@@ -27,4 +27,4 @@ Teams.init({
   timestamps: false,
 });
 
-export default Teams;
+export default TeamsModel;
