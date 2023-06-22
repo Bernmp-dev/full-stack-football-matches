@@ -28,7 +28,7 @@ describe('POST "/login"', function() {
     expect(response.body).to.have.property("token");
   });
 
-  it('Retorna status 400 e "Invalid password"', async function() {
+  it('Retorna status 400 e "All fields must be filled"', async function() {
     const response = await chai.request(app)
       .post('/login')
       .send({
@@ -40,12 +40,12 @@ describe('POST "/login"', function() {
     expect(response.body.message).to.deep.eq('All fields must be filled');
   });
 
-  it('Retorna status 400 e "Invalid email"', async function() {
+  it('Retorna status 400 e "All fields must be filled"', async function() {
     const response = await chai.request(app)
       .post('/login')
       .send({
-        email: loginMock.email,
-        password: '',
+        email: '',
+        password: loginMock.password,
       })
 
     expect(response.status).to.be.eq(400);
