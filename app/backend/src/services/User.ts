@@ -9,13 +9,13 @@ class UserService {
 
   async userLogin(
     email: UserInterface['email'],
-  ): Promise<UserInterface | null> {
+  ): Promise<UserModel> {
     //
-    const user = this.userModel.findOne({
+    const user = await this.userModel.findOne({
       where: { email },
     });
 
-    return user;
+    return user?.dataValues;
   }
 }
 
