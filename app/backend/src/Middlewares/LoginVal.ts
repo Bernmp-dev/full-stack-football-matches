@@ -36,20 +36,18 @@ class LoginMiddleware {
     next: NextFunction,
   ): Promise<void | Response> {
     //
-    const { email, password } = req.body;
-    const user = await this.userService.userLogin(email);
+    try {
+      const { email, password } = req.body;
+      const user = await this.userService.userLogin(email);
 
-    if (!user) {
+      const verifyPassword = bcrypt.compareSync(password, user.password);
+
+      if (!verifyPassword) throw new Error();
+
+      return next();
+    } catch (error) {
       return res.status(401).json({ message: this.invalidMessage });
     }
-
-    const verifyPassword = bcrypt.compareSync(password, user.password);
-
-    if (!verifyPassword) {
-      return res.status(401).json({ message: this.invalidMessage });
-    }
-
-    return next();
   }
 }
 
