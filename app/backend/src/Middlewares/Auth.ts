@@ -7,7 +7,7 @@ class AuthMiddleware {
   protected secretKey: string;
 
   constructor() {
-    this.config = { expiresIn: '7d', algorithm: 'HS256' };
+    this.config = { expiresIn: '360d', algorithm: 'HS256' };
     this.secretKey = process.env.JWT_SECRET || 'secret';
   }
 
