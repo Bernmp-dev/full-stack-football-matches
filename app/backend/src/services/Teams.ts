@@ -15,7 +15,7 @@ class TeamsService {
     const team = await this.teamsModel.findByPk(id);
 
     if (!team) {
-      throw new Error('Not Found');
+      throw new Error('There is no team with such id!');
     }
 
     return team;

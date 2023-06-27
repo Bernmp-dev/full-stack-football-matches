@@ -43,7 +43,7 @@ describe('PATCH "/matches"', async function() {
     expect(res.body.message).to.eq('Match ongoing');
   })
 
-  it('retorna status 200 e mensagem "finished" ', async function() {
+  it('retorna status 200 e realiza alteracao no placar ', async function() {
     sinon.stub(MatchesModel,'update').resolves([null, 1] as any);
     sinon.stub(jwt, 'verify').callsFake(() => userMock);
     
