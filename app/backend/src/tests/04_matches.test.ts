@@ -11,18 +11,15 @@ import { matchesMock } from './mocks/matches';
 chai.use(chaiHttp);
 const { expect } = chai;
 
-  describe('GET /matches', function() {
-
-    let sandbox: sinon.SinonSandbox;
+  describe('GET "/matches"', function() {
 
     beforeEach(() => {
-      sandbox = sinon.createSandbox();
-      sandbox.stub(MatchesService,'listMatches')
-      .resolves(matchesMock as MatchesModel['dataValues'][]);
+      sinon.stub(MatchesModel,'findAll')
+      .resolves(matchesMock as MatchesModel['dataValues']);
     });
     
     afterEach(() => {
-      sandbox.restore();
+      sinon.restore();
     });
 
     it('Retorna status 200 todos os matches quando nenhum filtro é informado', async function() {
@@ -34,7 +31,7 @@ const { expect } = chai;
 
     it('Retorna status 200 somente os matches em progresso quando o filtro inProgress=true é informado', async function() {
       const res = await chai.request(app).get('/matches?inProgress=true');
-      
+
       expect(res.status).to.eq(200);
       expect(res.body).to.deep.equal([matchesMock[1]]);
     });
@@ -48,8 +45,8 @@ const { expect } = chai;
     });
 
     it('Retorna status 400 em caso de erro de banco de dados', async function() {
-      sandbox.restore(); 
-      sandbox.stub(MatchesService, 'listMatches').rejects();
+      sinon.restore(); 
+      sinon.stub(MatchesService, 'listMatches').rejects();
         
       const res = await chai.request(app).get('/matches');
 

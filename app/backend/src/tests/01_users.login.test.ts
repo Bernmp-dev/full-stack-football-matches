@@ -3,7 +3,6 @@ import * as chai from 'chai';
 import * as jwt from 'jsonwebtoken';
 import * as sinon from 'sinon';
 import { app } from '../app';
-import UserController from '../controllers/User';
 import UserModel from '../database/models/User';
 import UserService from '../services/User';
 import { loginMock, tokenMock, userMock } from './mocks/users';
@@ -16,27 +15,23 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
   describe('POST "/login"', function() {
-    let sandbox: sinon.SinonSandbox;
     let userService: UserService;
-    let userController: UserController;
   
     beforeEach(() => {
-      sandbox = sinon.createSandbox();
       userService = new UserService(UserModel);
-      userController = new UserController(userService);
     });
   
     afterEach(() => {
-      sandbox.restore();
+      sinon.restore();
     });
       
   it('Ao passar corpo correto retorna status 200 e um token', async function() {
-    sandbox.stub(userService,'userLogin')
+    sinon.stub(userService,'userLogin')
     .resolves(userMock as UserModel);
 
-    sandbox.stub(bcrypt, 'compareSync').resolves(true);
+    sinon.stub(bcrypt, 'compareSync').resolves(true);
 
-    sandbox.stub(jwt, 'sign').callsFake(() => tokenMock.token);
+    sinon.stub(jwt, 'sign').callsFake(() => tokenMock.token);
 
     const response = await chai.request(app)
       .post('/login')
@@ -69,7 +64,7 @@ const { expect } = chai;
       .post('/login')
       .send({ email: loginMock.email, password: 'sdfg' })
 
-    sandbox.stub(bcrypt, 'compareSync').resolves(false);
+    sinon.stub(bcrypt, 'compareSync').resolves(false);
 
     expect(response.status).to.be.eq(401);
     expect(response.body.message).to.deep.eq('Invalid email or password');
