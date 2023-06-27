@@ -40,8 +40,20 @@ const updateMatch = async (req: Request, res: Response): Promise<Response> => {
   }
 };
 
+const registerMatch = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const response = await MatchesService.registerMatch(req.body);
+
+    return res.status(201).json(response);
+  } catch (error) {
+    const { message } = error as Error;
+    return res.status(400).json({ message });
+  }
+};
+
 export default {
   listMatches,
   finishMatch,
   updateMatch,
+  registerMatch,
 };

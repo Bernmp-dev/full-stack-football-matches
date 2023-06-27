@@ -32,8 +32,20 @@ const updateMatch = async (
   if (!affectedRows) throw new Error('Invalid update');
 };
 
+const registerMatch = async (
+  match: MatchesModel,
+): Promise<MatchesModel> => {
+  const [response] = await MatchesModel.findCreateFind({
+    where: { ...match },
+    defaults: { inProgress: true },
+  });
+
+  return response;
+};
+
 export default {
   listMatches,
   finishMatch,
   updateMatch,
+  registerMatch,
 };
