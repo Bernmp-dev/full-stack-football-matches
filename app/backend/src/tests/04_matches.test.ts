@@ -25,21 +25,21 @@ const { expect } = chai;
       sandbox.restore();
     });
 
-    it('Retorna todos os matches quando nenhum filtro é informado', async function() {
+    it('Retorna status 200 todos os matches quando nenhum filtro é informado', async function() {
       const res = await chai.request(app).get('/matches');
 
       expect(res.status).to.eq(200);
       expect(res.body).to.deep.equal(matchesMock);
     });
 
-    it('Retorna somente os matches em progresso quando o filtro inProgress=true é informado', async function() {
+    it('Retorna status 200 somente os matches em progresso quando o filtro inProgress=true é informado', async function() {
       const res = await chai.request(app).get('/matches?inProgress=true');
       
       expect(res.status).to.eq(200);
       expect(res.body).to.deep.equal([matchesMock[1]]);
     });
 
-    it('Retorna somente os matches concluídos quando o filtro inProgress=false é informado', async function() {
+    it('Retorna status 200 somente os matches concluídos quando o filtro inProgress=false é informado', async function() {
       const res = await chai.request(app).get('/matches?inProgress=false');
 
 
@@ -54,7 +54,7 @@ const { expect } = chai;
       const res = await chai.request(app).get('/matches');
 
       expect(res.status).to.eq(400);
-      expect(res.body.message).to.eq('Database Erro');
+      expect(res.body.message).to.eq('Database Error');
     });
 
   });
