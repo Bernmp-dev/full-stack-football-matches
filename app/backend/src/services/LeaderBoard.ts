@@ -1,9 +1,12 @@
 import BoardInterface from '../Interfaces/BoardInterface';
 import MatchesModel from '../database/models/Matches';
 import TeamsModel from '../database/models/Teams';
-import homeBoardAtt from '../utils/BoardAttributes';
+import { TeamFrom } from '../types/TeamFrom';
+import defineAtt from '../utils/BoardAttributes';
+import boardParser from '../utils/BoardParser';
+import boardSorter from '../utils/BoardSorter';
 
-const getleaderboard = async (team: string): Promise<BoardInterface[]> => {
+const getLeaderBoard = async (team: TeamFrom): Promise<BoardInterface[]> => {
   const matches = await MatchesModel.findAll({
     where: { inProgress: false },
     raw: true,
@@ -14,12 +17,15 @@ const getleaderboard = async (team: string): Promise<BoardInterface[]> => {
       attributes: { exclude: ['teamName', 'id'] },
     }],
     group: [`${team}.id`, `${team}.team_name`],
-    attributes: homeBoardAtt,
+    attributes: defineAtt(team),
   }) as unknown as BoardInterface[];
 
-  return matches;
+  const board = boardParser(matches);
+  board.sort(boardSorter);
+
+  return board;
 };
 
 export default {
-  getleaderboard,
+  getLeaderBoard,
 };
