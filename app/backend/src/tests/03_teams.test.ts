@@ -33,6 +33,6 @@ describe('GET "/teams/:id"', function() {
     const response = await chai.request(app).get('/teams/999');
 
     expect(response.status).eq(404);
-    expect(response.body.message).eq('Not Found');
+    expect(response.body.message).eq('There is no team with such id!');
   });
 });
